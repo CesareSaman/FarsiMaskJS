@@ -1,0 +1,32 @@
+<form onsubmit="event.preventDefault(); clearFormatted(this)" action="" method="post">
+<input oninput="numberFormatter(this)" >
+<input type="submit" value="send">
+</form>
+<script>
+    function numberFormatter(el) {
+        el.value = el.value.toEnglishDigits();
+        el.value = el.value.toString().split(",").join("").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        el.value = el.value.toFarsiDgits();
+        el.classList.add("numbermask");
+    }
+    function clearFormatted(el) {
+        let masked_inputs = el.getElementsByClassName('numbermask');
+        for (index = 0; index < masked_inputs.length; ++index) {
+            masked_inputs[index].value = masked_inputs[index].value.toString().split(",").join("");
+            masked_inputs[index].value = masked_inputs[index].value.toEnglishDigits();
+        }
+        el.submit();
+    }
+    String.prototype.toEnglishDigits = function () {
+        var id = {'۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'};
+        return this.replace(/[^0-9.]/g, function (w) {
+            return id[w] || w;
+        });
+    };
+    String.prototype.toFarsiDgits = function () {
+        var id = {0:'۰',1:'۱',2:'۲',3:'۳',4:'۴',5:'۵',6:'۶',7:'۷',8:'۸',9:'۹'};
+        return this.replace(/[^۰۱۲۳۴۵۶۷۸۹.]/g, function (w) {
+            return id[w] || w;
+        });
+    };
+</script>
